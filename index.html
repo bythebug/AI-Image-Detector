@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Image Detector</title>
+    <link rel="stylesheet" href="./src/styles/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>AI Image Detector</h1>
+      <p class="subtitle">Classify whether an image is AI-generated or a real photo. Runs entirely in your browser.</p>
+      <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; align-items:center;">
+        <a href="./tests.html" class="btn" target="_blank" rel="noopener">Open Tests</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="uploader">
+        <div id="dropzone" class="dropzone" tabindex="0" aria-label="Drop an image here or click to upload">
+          <div class="dz-content">
+            <div class="dz-icon">📷</div>
+            <div>
+              <div class="dz-title">Drag & drop an image</div>
+              <div class="dz-subtitle">or click to browse (PNG, JPG, JPEG, WebP, HEIC)</div>
+            </div>
+          </div>
+          <input id="file-input" type="file" accept="image/*" aria-label="Image file input">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <input id="url-input" type="url" placeholder="https://example.com/image.jpg" style="flex:1; padding:10px; border-radius:10px; border:1px solid #2b3245; background:#0d1117; color:#e5e7eb;" aria-label="Image URL input" />
+          <button id="url-load" class="btn">Load URL</button>
+        </div>
+        <div id="preview" class="preview hidden">
+          <img id="preview-img" alt="Selected image preview" />
+          <div id="image-info" class="image-info"></div>
+        </div>
+      </section>
+
+      <section id="results" class="results hidden" aria-live="polite">
+        <div class="verdict-row">
+          <div id="verdict-badge" class="badge">Pending</div>
+          <div id="confidence" class="confidence"></div>
+        </div>
+        <ul id="reasons" class="reasons"></ul>
+        <details class="raw-meta" id="breakdown">
+          <summary>Show confidence breakdown</summary>
+          <div id="breakdown-content"></div>
+        </details>
+        <details id="raw-meta" class="raw-meta">
+          <summary>Show raw metadata</summary>
+          <pre id="raw-meta-content"></pre>
+        </details>
+        <div id="debug" class="image-info" style="margin-top:8px;"></div>
+        <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
+          <input id="share-link" readonly placeholder="Shareable link will appear here" style="flex:1; padding:10px; border-radius:10px; border:1px solid #2b3245; background:#0d1117; color:#e5e7eb;" />
+          <button id="copy-share" class="btn">Copy</button>
+        </div>
+      </section>
+
+      <section class="notes">
+        <p><strong>Privacy:</strong> Images never leave your device. Analysis is done locally in your browser.</p>
+        <p><strong>Disclaimer:</strong> This tool uses heuristics based on EXIF/XMP and common AI metadata patterns. It can be fooled; treat results as indicative, not definitive.</p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>© 2025 AI Image Detector</span>
+    </footer>
+
+    <script src="https://unpkg.com/exifr/dist/full.umd.js"></script>
+    <script src="./src/scripts/script.js"></script>
+  </body>
+  </html>
+
+

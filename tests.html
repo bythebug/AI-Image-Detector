@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Image Detector - Tests</title>
+    <link rel="stylesheet" href="./src/styles/styles.css">
+  </head>
+  <body>
+    <main class="container">
+      <h2>Test Harness</h2>
+      <p class="subtitle">Run a small corpus of images and see verdicts.</p>
+      <div style="display:flex; gap:8px; margin:12px 0;">
+        <textarea id="test-urls" rows="6" style="flex:1; padding:10px; border-radius:10px; border:1px solid #2b3245; background:#0d1117; color:#e5e7eb;" placeholder="Paste one image URL per line..."></textarea>
+        <button id="run-tests" class="btn">Run</button>
+      </div>
+      <div id="test-results" class="results" style="display:none;"></div>
+    </main>
+    <script src="https://unpkg.com/exifr/dist/full.umd.js"></script>
+    <script src="./src/scripts/script.js"></script>
+    <script>
+      (function(){
+        const runBtn = document.getElementById('run-tests');
+        const urlsTa = document.getElementById('test-urls');
+        const out = document.getElementById('test-results');
+        runBtn.addEventListener('click', async () => {
+          const urls = (urlsTa.value || '').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+          if (!urls.length) return;
+          out.style.display = 'block';
+          out.innerHTML = '';
+          for (const url of urls) {
+            try {
+              const res = await fetch(url, { mode: 'cors' });
+              const blob = await res.blob();
+              const file = new File([blob], url.split('/').pop()||'image', { type: blob.type||'image/jpeg' });
+              const { metadata, summary } = await window.AIDetector.readMetadata(file);
+              const verdict = window.AIDetector.classify(metadata, summary);
+              const row = document.createElement('div');
+              row.style.margin = '10px 0';
+              row.innerHTML = `<div><strong>${url}</strong></div><div>${verdict.isAi ? 'AI' : 'Non-AI'} (conf ${verdict.confidence}%)</div>`;
+              out.appendChild(row);
+            } catch (err) {
+              const row = document.createElement('div');
+              row.style.margin = '10px 0';
+              row.textContent = `${url} -> Error: ${err}`;
+              out.appendChild(row);
+            }
+          }
+        });
+      })();
+    </script>
+  </body>
+  </html>
+
+
