@@ -4,6 +4,8 @@ Author: Suraj Van Verma (id: bythebug)
 
 A lightweight, static web app that classifies whether an image is AI-generated or a real photograph using metadata and provenance signals. Runs entirely in the browser.
 
+Demo: https://aiimagedetector.netlify.app/
+
 ## Features
 - Drag-and-drop image upload with preview
 - Client-side EXIF/XMP/IPTC parsing (via `exifr`) – no uploads to any server
@@ -63,11 +65,6 @@ The UI shows a breakdown of which signals contributed to the decision.
 
 ## Deployment
 - Recommend GitHub Pages/Netlify. Deploy the root folder as a static site.
-
-## Resume Highlights
-- Built a privacy-first, client-only AI vs Real image classifier using browser EXIF parsing.
-- Implemented provenance signal scanning (C2PA/JUMBF) and confidence breakdown UI.
-- Added test harness and public API for reproducible evaluations.
 
 ## License
 MIT
